@@ -5,11 +5,11 @@
     <link type="text/css" rel="stylesheet" href="/static/css/theme.css" />
 </head>
 <body>
-    <h1>Is the answer yes?</h1>
-
+    <h1>{{ text }}</h1>
+    <h2>{% if status %} YES {% else %} NO {% endif %}</h2>
     <p>Your question has been created.</p>
-    <p>Public link: {{ id }}</p>
-    <p>Secret edit link: {{ secret }}</p>
+    <p>Public link: <a href="/{{ id }}">Public link</a></p>
+    <p>Secret edit link: <a href="/{{ id }}/{{ secret }}">Secret edit link</a></p>
 
 </body>
 </html>

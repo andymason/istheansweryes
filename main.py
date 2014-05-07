@@ -13,6 +13,7 @@ app = Flask(__name__)
 class Question(ndb.Model):
     text = ndb.StringProperty()
     secret = ndb.StringProperty()
+    status = ndb.BooleanProperty()
     data = ndb.DateTimeProperty(auto_now_add=True)
 
 
@@ -20,6 +21,41 @@ class Question(ndb.Model):
 def hello():
     """Return a friendly HTTP greeting."""
     return render_template('index.html')
+
+@app.route('/update/<id>', methods=['POST'])
+def updateQuestion(id=None):
+    try:
+        keyID = int(id)
+    except:
+        return 'Invalid key'
+
+    questionKey = ndb.Key('Question', keyID)
+    storedQuestion = questionKey.get()
+
+    if storedQuestion is None:
+        return 'Question not found'
+
+    secret = request.form['secret']
+    if storedQuestion.secret != secret:
+        return 'Invalid secret'
+
+    storedQuestion.text = request.form['question_text']
+
+    if 'status' in request.form:
+        storedQuestion.status = True
+    else:
+        storedQuestion.status = False
+
+    storedQuestion.put()
+
+    return render_template('success.html',
+            id=questionKey.id(),
+            status=storedQuestion.status,
+            text=storedQuestion.text,
+            secret=storedQuestion.secret)
+
+
+
 
 @app.route('/create', methods=['POST'])
 def createQuestion():
@@ -31,7 +67,11 @@ def createQuestion():
     question.secret = base64.urlsafe_b64encode(urandom(24))
     questionKey = question.put()
 
-    return render_template('success.html', id=questionKey.id(), secret=question.secret)
+    return render_template('success.html',
+            id=questionKey.id(),
+            status=question.status,
+            text=question.text,
+            secret=question.secret)
 
 
 @app.route('/<id>/<secret>', methods=['GET'])
@@ -50,7 +90,11 @@ def editQuestion(id=None, secret=None):
     if storedQuestion.secret != secret:
         return 'Invalid secret'
 
-    return 'You\'re in!'
+    return render_template('edit.html',
+            id=questionKey.id(),
+            status=storedQuestion.status,
+            text=storedQuestion.text,
+            secret=storedQuestion.secret)
 
 
 @app.route('/<id>', methods=['GET'])

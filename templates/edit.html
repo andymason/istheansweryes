@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<head>
+    <title>Is the answer yes?</title>
+    <link type="text/css" rel="stylesheet" href="/static/css/theme.css" />
+</head>
+<body>
+    <h1>Is the answer yes?</h1>
+
+    <form action="/update/{{id}}" method="POST" name="question" id="question_form">
+        <input type="hidden" value="{{ secret }}" name="secret" />
+        <label for="question_text">What is the question?</label>
+        <input type="text" name="question_text" id="question_text" value="{{text}}" />
+        <input type="checkbox" name="status" {% if status %} checked {% endif %} />
+        <input type="submit" id="question_submit" value="Update" />
+    </form>
+</body>
+</html>
