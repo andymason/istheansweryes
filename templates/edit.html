@@ -5,14 +5,30 @@
     <link type="text/css" rel="stylesheet" href="/static/css/theme.css" />
 </head>
 <body>
-    <h1>Is the answer yes?</h1>
+    <h1>{{ text }}</h1>
+    <h2>{% if status %} YES {% else %} NO {% endif %}</h2>
+    
+    <p>Your question has been created.</p>
+    <p>Public link: <a href="/{{ id }}">Public link</a></p>
+    <p>Secret edit link: <a href="/{{ id }}/{{ secret }}">Secret edit link</a></p>
 
     <form action="/update/{{id}}" method="POST" name="question" id="question_form">
         <input type="hidden" value="{{ secret }}" name="secret" />
-        <label for="question_text">What is the question?</label>
-        <input type="text" name="question_text" id="question_text" value="{{text}}" />
-        <input type="checkbox" name="status" {% if status %} checked {% endif %} />
-        <input type="submit" id="question_submit" value="Update" />
+        
+        <fieldset>
+            <legend>Edit question</legend>
+            <p>
+                <label for="question_text">Question text</label>
+                <input type="text" name="question_text" id="question_text" value="{{text}}" />
+            </p>
+            <p>
+                <label for="status">Is the answer yes?</label>
+                <input type="checkbox" name="status" {% if status %} checked {% endif %} />
+            </p>
+            <p>
+                <input type="submit" id="question_submit" value="Update" />
+            </p>
+        </fieldset>
     </form>
 </body>
 </html>

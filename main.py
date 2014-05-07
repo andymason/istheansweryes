@@ -1,6 +1,8 @@
 from flask import Flask
 from flask import render_template
 from flask import request
+from flask import redirect
+from flask import url_for
 from google.appengine.ext import ndb
 from os import urandom
 import base64
@@ -19,7 +21,6 @@ class Question(ndb.Model):
 
 @app.route('/')
 def hello():
-    """Return a friendly HTTP greeting."""
     return render_template('index.html')
 
 @app.route('/update/<id>', methods=['POST'])
@@ -47,14 +48,9 @@ def updateQuestion(id=None):
         storedQuestion.status = False
 
     storedQuestion.put()
-
-    return render_template('success.html',
-            id=questionKey.id(),
-            status=storedQuestion.status,
-            text=storedQuestion.text,
-            secret=storedQuestion.secret)
-
-
+    return redirect(url_for('editQuestion',
+                            id=questionKey.id(),
+                            secret=storedQuestion.secret))
 
 
 @app.route('/create', methods=['POST'])
@@ -67,11 +63,9 @@ def createQuestion():
     question.secret = base64.urlsafe_b64encode(urandom(24))
     questionKey = question.put()
 
-    return render_template('success.html',
-            id=questionKey.id(),
-            status=question.status,
-            text=question.text,
-            secret=question.secret)
+    return redirect(url_for('editQuestion',
+                            id=questionKey.id(),
+                            secret=question.secret))
 
 
 @app.route('/<id>/<secret>', methods=['GET'])
@@ -110,8 +104,9 @@ def showQuestion(id=None):
     if storedQuestion is None:
         return 'Could\'t find question'
 
-    return str(storedQuestion)
-
+    return render_template('public.html',
+            status=storedQuestion.status,
+            text=storedQuestion.text)
 
 
 @app.errorhandler(404)

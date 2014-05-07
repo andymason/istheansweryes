@@ -1,0 +1,11 @@
+<!doctype html>
+<html>
+<head>
+    <title>{{ text }}</title>
+    <link type="text/css" rel="stylesheet" href="/static/css/theme.css" />
+</head>
+<body>
+    <h1 id="question_title">{{ text }}</h1>
+    <p id="answer_title">{% if status %} YES {% else %} NO {% endif %}</p>
+</body>
+</html>

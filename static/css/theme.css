@@ -1,3 +1,26 @@
 body {
-    color: red;
+    color: #000;
+    text-align: center;
+    font-family: arial, sans-serif;
+}
+
+#question_form,
+#question_form input {
+    font-size: 2rem;
+}
+
+input {
+    padding: 0.8rem;
+}
+
+#question_title {
+    font-size: 20px;
+    font-family: "arial black", arial, sans-serif;
+}
+
+#answer_title {
+    font-size: 24rem;
+    font-family: "arial black", arial, sans-serif;
+    font-weight: bold;
+    margin: 0;
 }
