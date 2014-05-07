@@ -4,11 +4,11 @@ from flask import request
 from google.appengine.ext import ndb
 from os import urandom
 import base64
+
 app = Flask(__name__)
 
 # Note: We don't need to call run() since our application is embedded within
 # the App Engine WSGI application server.
-
 
 class Question(ndb.Model):
     text = ndb.StringProperty()
@@ -32,6 +32,26 @@ def createQuestion():
     questionKey = question.put()
 
     return render_template('success.html', id=questionKey.id(), secret=question.secret)
+
+
+@app.route('/<id>/<secret>', methods=['GET'])
+def editQuestion(id=None, secret=None):
+    try:
+        keyID = int(id)
+    except:
+        return 'Invalid key'
+
+    questionKey = ndb.Key('Question', keyID)
+    storedQuestion = questionKey.get()
+
+    if storedQuestion is None:
+        return 'Question not found'
+
+    if storedQuestion.secret != secret:
+        return 'Invalid secret'
+
+    return 'You\'re in!'
+
 
 @app.route('/<id>', methods=['GET'])
 def showQuestion(id=None):
