@@ -1,5 +1,6 @@
-application: hello-flask-app-engine
+application: istheansweryes
 version: 1
+module: default
 runtime: python27
 api_version: 1
 threadsafe: yes
