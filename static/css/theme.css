@@ -32,3 +32,11 @@ input {
     font-weight: bold;
     margin: 0;
 }
+
+.all-questions {
+    font-family: monospace;
+    font-size: 11px;
+    margin: 10px;
+    padding: 0;
+    text-align: left;
+}

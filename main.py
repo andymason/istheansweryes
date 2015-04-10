@@ -91,6 +91,12 @@ def editQuestion(id=None, secret=None):
             secret=storedQuestion.secret)
 
 
+@app.route('/all-questions', methods=['GET'])
+def showQuestions(id=None):
+    questions = Question.query().fetch(200)
+    return render_template('questions.html',
+            questions=questions)
+
 @app.route('/<id>', methods=['GET'])
 def showQuestion(id=None):
     try:
