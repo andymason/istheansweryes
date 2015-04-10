@@ -93,7 +93,7 @@ def editQuestion(id=None, secret=None):
 
 @app.route('/all-questions', methods=['GET'])
 def showQuestions(id=None):
-    questions = Question.query().fetch(200)
+    questions = Question.query().order(-Question.data).fetch(200)
     return render_template('questions.html',
             questions=questions)
 
